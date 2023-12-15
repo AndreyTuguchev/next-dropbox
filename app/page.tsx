@@ -6,7 +6,7 @@ export default function Home() {
     <main className="">
         {/* <h1>NextDropbox</h1> */}
         <Hero />
-        <UserButton />
+        {/* <UserButton /> */}
     </main>
   )
 }
