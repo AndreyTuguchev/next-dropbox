@@ -5,6 +5,7 @@ import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/fi
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
 import Dropzone from 'react-dropzone'
+import toast from 'react-hot-toast';
 
 
 function DropZoneComp() {
@@ -13,9 +14,12 @@ function DropZoneComp() {
   const [loading, setLoading] = useState(false);
   const { isLoaded, isSignedIn, user } = useUser()
 
+
   const uploadSingleFile = async ( selectedFile: File ) => {
     if ( loading ) return;
     if ( !user ) return;
+
+    const toastId = toast.loading( "Uploading...")
 
     setLoading(true);
     
@@ -37,11 +41,21 @@ function DropZoneComp() {
 
       await updateDoc( doc( db, "users", user.id, "files", docRef.id), {
         downloadURL: downloadURL,
+      }).then(() => {
+        toast.success( "Uploaded Successfully", {
+          id: toastId,
+        });
+        setLoading(false);
+      }).catch((error) => {
+        console.error( error );
+        toast.error( `Error uploading file... Please try again.`, {
+          id: toastId,
+        });
+        // TODO: trigger useTelegram hook here
       });
     });
     
     
-    setLoading(false);
   }
 
   const onDropActions = ( acceptedFiles: File[] ) => {
@@ -65,6 +79,8 @@ function DropZoneComp() {
     {({getRootProps, getInputProps, isDragActive, isDragReject, fileRejections}) => {
       
     const isFileTooLarge = fileRejections.length > 0 && fileRejections[0].file.size > maxSize;
+    
+    
           
     return (
         <section className='m-4'>

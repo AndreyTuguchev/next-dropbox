@@ -26,10 +26,7 @@ async function Dashboard() {
 
   return (
     <>
-    <div>Dashboard </div>
-    <div>
       <DropZoneComp />
-
       <section className="container space-y-5">
         <h2 className="font-bold">All Files</h2>
 
@@ -39,7 +36,6 @@ async function Dashboard() {
           />
         </div>
       </section>
-    </div>
     </>
   )
 }

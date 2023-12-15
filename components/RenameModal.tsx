@@ -14,10 +14,14 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
+import toast from "react-hot-toast";
+
 
 function RenameModal() {
     const { user } = useUser();
     const [input, setInput] = useState("")
+    
+    
 
     const [ isRenameModalOpen, setIsRenameModalOpen, fileId, filename ] = useAppStore( (state) => [
         state.isRenameModalOpen,
@@ -25,16 +29,28 @@ function RenameModal() {
         state.fileId,
         state.filename
     ])
+    
 
+    
     const renameFile = async () => {
         if (!user || !fileId ) return;
+
+        const toastId = toast.loading( "Renaming...")
+
 
         await updateDoc( doc( db, "users", user.id, "files", fileId), {
             filename: input,
         } ).then( () => {
-
+            toast.success( "Renamed Successfully", {
+                id: toastId,
+            });
             setInput( '' );
             setIsRenameModalOpen( false )
+        }).catch((error) =>{
+            console.error( error );
+            toast.error( `Error renaming file...`, {
+                id: toastId,
+            });
         })
 
     }
