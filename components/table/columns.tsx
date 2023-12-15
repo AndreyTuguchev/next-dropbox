@@ -11,7 +11,7 @@ import { FileIcon, defaultStyles } from "react-file-icon";
 export const columns: ColumnDef<FileType>[] = [
     {
     accessorKey: "type",
-    header: "type",
+    header: "Type",
     cell: ({ renderValue, ...props}) =>{
         const type = renderValue() as string;
         const extension: string = type.split("/")[1];

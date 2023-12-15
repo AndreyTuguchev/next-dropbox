@@ -75,7 +75,7 @@ function DropZoneComp() {
             <div>{isDragActive && !isDragReject && "Drop to upload this file!"}</div>
             <div>{isDragReject && "File type not accepted, sorry!"}</div>
               {isFileTooLarge && (
-                <div className="text-danger mt-2">File is too large.</div>
+                <div className="text-red-500 font-bold mt-2">Attempted file is too large. Please try again.</div>
             )}
         </div>
         </section>
